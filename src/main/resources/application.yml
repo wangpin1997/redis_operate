@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: redis
+  redis:
+    host: www.wccwp.club
+    port: 6379
+    password:
+
+
+server:
+  port: 8080
+
+
