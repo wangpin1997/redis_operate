@@ -19,25 +19,25 @@ public class RedisStringTest {
     @Test
     public void test() throws InterruptedException {
         //set操作
-       // redisString.testSet();
+        redisString.testSet();
         //带有超时的添加操作
-//        redisString.testSetTimeOut();
+        redisString.testSetTimeOut();
         //带偏移量的添加操作
-//        redisString.testSetOverWrite();
+        redisString.testSetOverWrite();
         //不能覆盖的添加操作
-//        redisString.testSetIfAbsent();
+        redisString.testSetIfAbsent();
         //批量添加删除操作
-//        redisString.testMultiSetAndGet();
+        redisString.testMultiSetAndGet();
         //设置新的值，覆盖并返回
-      //  redisString.testGetAndSet();
+        redisString.testGetAndSet();
         //自增操作
-     //   redisString.testIncrement();
+        redisString.testIncrement();
         //追加操作
-       // redisString.testAppend();
+        redisString.testAppend();
         //截取操作
-      //  redisString.testGetPart();
+        redisString.testGetPart();
         //获取值长度操作
-        //redisString.testSize();
+        redisString.testSize();
         //位操作
         redisString.testSetBit();
     }
