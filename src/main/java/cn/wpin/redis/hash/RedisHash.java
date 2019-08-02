@@ -1,8 +1,10 @@
 package cn.wpin.redis.hash;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -128,9 +130,9 @@ public class RedisHash {
     }
 
     /**
-     * return keys list
+     * return keys list ,values list and size
      */
-    public void testKeys(){
+    public void testKeysAndValues(){
         String methodName=Thread.currentThread().getStackTrace()[1].getMethodName();
         redisTemplate.delete(methodName);
         Map<String,Object> map=new HashMap<>();
@@ -144,9 +146,28 @@ public class RedisHash {
         System.out.println(hashOperations.values(methodName));
         //print 3
         System.out.println(hashOperations.size(methodName));
+        // only the hashKey not exist to success  return true
+        System.out.println(hashOperations.putIfAbsent("pw","key","a"));
+        //print false because the hashKey exist
+        System.out.println(hashOperations.putIfAbsent("pw","key","a"));
     }
 
-    public void testPutIfAbsent(){
+    /**
+     * scan the matching  entries
+     */
+    public void testScan(){
+        String methodName=Thread.currentThread().getStackTrace()[1].getMethodName();
+        redisTemplate.delete(methodName);
+        Map<String,Object> map=new HashMap<>();
+        map.put("key2","v1");
+        map.put("key1","v2");
+        map.put("key3","v3");
+        hashOperations.putAll(methodName,map);
+        Cursor<Map.Entry<String,Object>> cursor=hashOperations.scan(methodName, ScanOptions.NONE);
+        while (cursor.hasNext()){
+            Map.Entry<String,Object> entry=cursor.next();
+            System.out.println(entry.getKey()+"--"+entry.getValue());
+        }
 
     }
 }

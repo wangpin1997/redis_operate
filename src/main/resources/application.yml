@@ -5,7 +5,7 @@ spring:
     host: www.wccwp.club
     port: 6379
     password:
-    database: 2
+    database: 3
 
 
 server:
