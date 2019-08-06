@@ -19,12 +19,12 @@ public class RedisZSetTest {
 
     @Test
     public void test(){
-//        redisZSet.testAdd();
-//        redisZSet.testRemove();
-//        redisZSet.testIncrementScore();
-//        redisZSet.testRank();
-//        redisZSet.testRangeWithScores();
-          redisZSet.testBound();
+        redisZSet.testAdd();
+        redisZSet.testRemove();
+        redisZSet.testIncrementScore();
+        redisZSet.testRank();
+        redisZSet.testRangeWithScores();
+        redisZSet.testBound();
     }
 
 }
