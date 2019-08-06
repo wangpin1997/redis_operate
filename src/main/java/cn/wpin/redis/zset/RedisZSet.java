@@ -1,6 +1,7 @@
 package cn.wpin.redis.zset;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.DefaultTypedTuple;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -57,6 +59,10 @@ public class RedisZSet {
         System.out.println(zSet.range(methodName,0,-1));
     }
 
+    /**
+     * the method incrementScore()
+     * add a key and give it score
+     */
     public void testIncrementScore(){
         String methodName=Thread.currentThread().getStackTrace()[1].getMethodName();
         redisTemplate.delete(methodName);
@@ -68,6 +74,11 @@ public class RedisZSet {
         System.out.println(redisTemplate.keys(methodName));
     }
 
+    /**
+     * the method rank() print the element index
+     * the range() print all element asc
+     * the reverseRange() print all bat desc
+     */
     public void testRank(){
         String methodName=Thread.currentThread().getStackTrace()[1].getMethodName();
         redisTemplate.delete(methodName);
@@ -82,8 +93,36 @@ public class RedisZSet {
         System.out.println(zSet.reverseRange(methodName,0,-1));
     }
 
+    /**
+     *
+     */
     public void testRangeWithScores(){
-        String methodName=Thread.currentThread().getStackTrace()[1].getMethodName();
+        String methodName=Thread.currentThread().getStackTrace()[3].getMethodName();
         redisTemplate.delete(methodName);
+        zSet.add(methodName,"a",0);
+        zSet.add(methodName,"b",-3);
+        zSet.add(methodName,"c",-2);
+        zSet.add(methodName,"d",1);
+        Set<ZSetOperations.TypedTuple<Object>> ranges=zSet.rangeWithScores(methodName,0,1);
+        Iterator<ZSetOperations.TypedTuple<Object>> iterator=ranges.iterator();
+        while (iterator.hasNext()){
+            //use iterator must make variable =iter.next() ,cannot  repeat use,otherwise throw NoSuchElementException
+            ZSetOperations.TypedTuple<Object> tuple=iterator.next();
+            System.out.println(tuple.getValue()+":"+tuple.getScore());
+        }
+
+        Set<Object> set=zSet.rangeByScore(methodName,1,2);
+        //print [d]
+        System.out.println(set);
+        Set<Object> set1=zSet.rangeByScore(methodName,0,10,0,-1);
+        //print [d] 求集合所有元素且0-10之间
+        System.out.println(set1);
+
+
+    }
+
+    public void testBound(){
+        BoundValueOperations<String,Object> bound=redisTemplate.boundValueOps("testRank");
+        System.out.println(bound.getKey());
     }
 }
